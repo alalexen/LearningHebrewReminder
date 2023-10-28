@@ -7,3 +7,6 @@ To add:
 6. writing words to file from pealim app
 7. sentenses to translate
 8. files with words divided by topics
+
+-------
+can be used with a crontab
