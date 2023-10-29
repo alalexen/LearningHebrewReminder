@@ -28,7 +28,6 @@ class BasePage:
     def open_pealim(self, word) -> None:
         """ Open browser and navigate to pealim app"""
         self.driver.get(url % word)
-        self.driver.get(url % word)
         self.driver.maximize_window()
         sleep(7)
 
@@ -65,7 +64,7 @@ class AddWord(BasePage):
         self.wait_until_element_displayed(active_forms_title)
 
 
-search_word = AddWord(15)
+search_word = AddWord()
 search_word.open_pealim("לייצר")
 search_word.close_addBlock_tabs()
 search_word.test_view_full_conjugation()
