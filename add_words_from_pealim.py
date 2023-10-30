@@ -1,5 +1,6 @@
+import os
 from time import sleep
-
+import locators as xpath
 import pytest
 from selenium import webdriver
 import sys
@@ -10,64 +11,103 @@ from selenium.webdriver.support import expected_conditions as EC
 
 from selenium.webdriver.common.by import By as by
 
-url = "https://www.pealim.com/search/?q=%s"
-search_word_input = "//input[@id='search-box']"
-go_button = "//input[@value='Go']"
-view_full_conjugation = "//a[@class='btn btn-primary' and contains(text(), 'View full conjugation')]"
-active_forms_title = "//h3[@class='page-header' and contains(text(), 'Active forms')]"
-
 class BasePage:
     def __init__(self, timeout=15):
+        self.url = "https://www.pealim.com"
+        self.search_word_url = "https://www.pealim.com/search/?q=%s"
 
         chrome_options = webdriver.ChromeOptions()
-        chrome_options.add_extension('/Users/store/Desktop/extensions/1.9.6_0.crx')
+        chrome_options.add_extension("/Users/store/Desktop/extensions/1.9.6_0.crx")
 
         self.driver = webdriver.Chrome(options=chrome_options)
         self.wait = WebDriverWait(self.driver, timeout=timeout)
 
-    def open_pealim(self, word) -> None:
-        """ Open browser and navigate to pealim app"""
-        self.driver.get(url % word)
+    def navigate_to_url(self, url) -> None:
+        self.driver.get(url)
+        self.driver.refresh()  # add block issue
+
+    def open_pealim(self) -> None:
+        """Open browser and navigate to pealim app"""
+        self.navigate_to_url(self.url)
         self.driver.maximize_window()
-        sleep(7)
+        sleep(5)
+        self.close_addBlock_tabs()
 
     def close_addBlock_tabs(self) -> None:
-        """ Close all tabs that were opened with addBlock extension, stitch to the main tab"""
+        """Close all tabs that were opened with addBlock extension, switch to the main tab"""
         tabs = self.driver.window_handles
         for t in tabs:
             self.driver.switch_to.window(t)
             if "Blocker" in self.driver.title:
                 self.driver.close()
         self.driver.switch_to.window(self.driver.window_handles[0])
-        self.driver.refresh()
 
     def click_on_element(self, xpath) -> None:
-        """ Wait until element is displayed and click """
+        """Wait until element is displayed and click"""
         element = self.wait_until_element_displayed(xpath)
         element.click()
 
     def wait_until_element_displayed(self, element):
         element = WebDriverWait(self.driver, 15).until(
-            EC.presence_of_element_located((by.XPATH, element)))
+            EC.presence_of_element_located((by.XPATH, element))
+        )
         return element
 
     def fill_input_with_text(self, input_xpath, text) -> None:
-        """ Wait until input is displayed and fill the text """
+        """Wait until input is displayed and fill the text"""
         element = self.wait_until_element_displayed(input_xpath)
         element.send_keys(text)
 
 
 class AddWord(BasePage):
+    def view_full_conjugation(self) -> None:
+        self.click_on_element(xpath.view_full_conjugation)
+        self.wait_until_element_displayed(xpath.meaning_title)
 
-    def test_view_full_conjugation(self) -> None:
-        self.click_on_element(view_full_conjugation)
-        self.wait_until_element_displayed(active_forms_title)
+    def get_all_conjugations(self) -> str:
+        """Get all conjugations
+        :return: String with conjugations separated by comma
+        """
+        all_forms = ""
+        all_forms += self.driver.find_element(
+            by.XPATH, value=xpath.conjugation_of).text.replace("Conjugation of ", "") + ","
+
+        for i in list(xpath.conjugations.values())[1:]:
+            form = self.driver.find_element(by=by.XPATH, value=xpath.conjugation % i).text
+            all_forms += form + ","
+
+        return all_forms.replace("*", "")
+
+    def get_translation(self) -> str:
+        """Get translation"""
+        translation = self.driver.find_element(
+            by=by.XPATH, value=xpath.translation).text
+        return translation.replace(",", ";")
+
+    def add_conjugations_and_translations_to_file(self):
+        conjugations = self.get_all_conjugations()
+        translation = self.get_translation()
+
+        verbs_size = os.stat("verbs.csv").st_size
+        translations_size = os.stat("translations.csv").st_size
+
+        with open("verbs.csv", "a") as v:
+            v.write(conjugations if verbs_size == 0 else "\n" + conjugations)
+
+        with open("translations.csv", "a") as t:
+            t.write(translation if translations_size == 0 else "\n" + translation)
+
+    def add_verbs_to_file_batch(self, infinitives: list):
+        """Open pealim and search for infinitive from the list.
+        Add conjugations to verbs file and translation to translations file
+        """
+        self.open_pealim()
+
+        for w in infinitives:
+            self.navigate_to_url(self.search_word_url % w)
+            self.view_full_conjugation()
+            self.add_conjugations_and_translations_to_file()
 
 
-search_word = AddWord()
-search_word.open_pealim("לייצר")
-search_word.close_addBlock_tabs()
-search_word.test_view_full_conjugation()
-
-
-
+add_word = AddWord()
+add_word.add_verbs_to_file_batch(["לכתוב", "לקרוא", "לדבר", "ללמוד", "לאהוב"])
