@@ -1,19 +1,22 @@
-To add:
-1. scoring
-2. GUI with tkinter
-~~3. timer for reminder~~
-4. binyanim for each word
-5. some rules as a tooltips
-~~6. writing words to file from pealim app~~
-7. sentenses to translate
-8. files with words divided by topics
+*How to add verbs*: 
 
------------------------------------------
-can be used with a crontab
+1. Add AddBlock extension (see below)
+2. Run add_words_from_pealim.py with provided list of hebrew infinitives (add_verbs_to_file_batch)
 
------------------------------------------
-How to add AddBlock:
+*How to add AddBlock*:
 
 1. To download and save the extension as .crx file
 2. Add option to the driver: driver.add_extension('User/path_to_file.crx')
+
+*How to set reminder*: 
+
+Currently, to use reminder you need to create a crontab.
+You'll need to navigate to the project directory and activate venv, then run file reminder.py 
+Reminder will open a window with word-translation and close it after 5sec
+
+*For verbs practicing*:
+
+Run questions_verbs.py
+It'll ask you a correct translation of added words
+
 

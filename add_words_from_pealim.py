@@ -11,6 +11,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 from selenium.webdriver.common.by import By as by
 
+
 class BasePage:
     def __init__(self, timeout=15):
         self.url = "https://www.pealim.com"
@@ -69,35 +70,39 @@ class AddWord(BasePage):
         :return: String with conjugations separated by comma
         """
         all_forms = ""
-        all_forms += self.driver.find_element(
-            by.XPATH, value=xpath.conjugation_of).text.replace("Conjugation of ", "") + ","
+        all_forms += (
+            self.driver.find_element(by.XPATH, value=xpath.conjugation_of).text.replace(
+                "Conjugation of ", "") + ",")
 
         for i in list(xpath.conjugations.values())[1:]:
-            form = self.driver.find_element(by=by.XPATH, value=xpath.conjugation % i).text
+            form = self.driver.find_element(
+                by=by.XPATH, value=xpath.conjugation % i
+            ).text
             all_forms += form + ","
 
-        return all_forms.replace("*", "")
+        return all_forms.replace("*", "")[:-1]
 
     def get_translation(self) -> str:
         """Get translation"""
         translation = self.driver.find_element(
-            by=by.XPATH, value=xpath.translation).text
+            by=by.XPATH, value=xpath.translation
+        ).text
         return translation.replace(",", ";")
 
-    def add_conjugations_and_translations_to_file(self):
+    def add_conjugations_and_translations_to_file(self) -> None:
         conjugations = self.get_all_conjugations()
         translation = self.get_translation()
 
         verbs_size = os.stat("verbs.csv").st_size
-        translations_size = os.stat("translations.csv").st_size
+        translations_size = os.stat("verbs_translations.csv").st_size
 
         with open("verbs.csv", "a") as v:
             v.write(conjugations if verbs_size == 0 else "\n" + conjugations)
 
-        with open("translations.csv", "a") as t:
+        with open("verbs_translations.csv", "a") as t:
             t.write(translation if translations_size == 0 else "\n" + translation)
 
-    def add_verbs_to_file_batch(self, infinitives: list):
+    def add_verbs_to_file_batch(self, infinitives: list) -> None:
         """Open pealim and search for infinitive from the list.
         Add conjugations to verbs file and translation to translations file
         """
@@ -110,4 +115,4 @@ class AddWord(BasePage):
 
 
 add_word = AddWord()
-add_word.add_verbs_to_file_batch(["לכתוב", "לקרוא", "לדבר", "ללמוד", "לאהוב"])
+add_word.add_verbs_to_file_batch([])
