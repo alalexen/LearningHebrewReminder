@@ -1,5 +1,5 @@
 import random
-from reminder import get_one_random_verb
+from get_word import get_one_random_verb
 
 
 def which_infinitive_translation_is_correct():
@@ -45,7 +45,7 @@ def which_conjugation_is_correct():
         i += 1
 
     input_result = input(
-        f"""Select the correct form of '{verb['translation']}' in {verb['form']}:
+        f"""Select the correct form of >> {verb['translation']}  - {verb['form']}
         \n{options[1]} - 1\n{options[2]} - 2\n{options[3]} - 3\n{options[4]} - 4\nyour answer: """
     )
 

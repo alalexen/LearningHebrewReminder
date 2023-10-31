@@ -113,6 +113,8 @@ class AddWord(BasePage):
             self.view_full_conjugation()
             self.add_conjugations_and_translations_to_file()
 
+        print("**** Words were successfully added ****")
+
 
 add_word = AddWord()
-add_word.add_verbs_to_file_batch([])
+add_word.add_verbs_to_file_batch(["לנהוג", "ללוות", "לשכנע"])
