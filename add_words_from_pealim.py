@@ -72,7 +72,10 @@ class AddWord(BasePage):
         all_forms = ""
         all_forms += (
             self.driver.find_element(by.XPATH, value=xpath.conjugation_of).text.replace(
-                "Conjugation of ", "") + ",")
+                "Conjugation of ", ""
+            )
+            + ","
+        )
 
         for i in list(xpath.conjugations.values())[1:]:
             form = self.driver.find_element(
