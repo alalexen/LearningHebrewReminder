@@ -115,9 +115,9 @@ class AddWord(BasePage):
             self.navigate_to_url(self.search_word_url % w)
             self.view_full_conjugation()
             self.add_conjugations_and_translations_to_file()
-
+            print(f"Added the word {w}")
         print("**** Words were successfully added ****")
 
 
 add_word = AddWord()
-add_word.add_verbs_to_file_batch(["לנהוג", "ללוות", "לשכנע"])
+add_word.add_verbs_to_file_batch(["לייצר", "לדרוש", "להקיף", "לגמגם", "לערוך" ,"לדווח" , "להיאלץ"])
