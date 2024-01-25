@@ -1,11 +1,7 @@
 import os
 from time import sleep
 import locators as xpath
-import pytest
 from selenium import webdriver
-import sys
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -119,5 +115,9 @@ class AddWord(BasePage):
         print("**** Words were successfully added ****")
 
 
-add_word = AddWord()
-add_word.add_verbs_to_file_batch(["לייצר", "לדרוש", "להקיף", "לגמגם", "לערוך" ,"לדווח" , "להיאלץ"])
+
+
+
+
+
+
