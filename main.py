@@ -3,7 +3,7 @@ from get_sentence_example import Reverso
 
 
 if __name__ == '__main__':
-    words = ["לְהִתרַחֵש"]
+    words = ["הלילה"]
     # add_words = AddWord()
     # add_words.add_verbs_to_file_batch(words)
     for w in words:
