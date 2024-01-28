@@ -13,8 +13,9 @@ def ask_action():
 
 
 def ask_words(input_text: str):
-    words = input(input_text)
-    return [words]
+    """Input words for searching"""
+    w = input(input_text)
+    return w.split(",")
 
 
 if __name__ == '__main__':
@@ -23,7 +24,7 @@ if __name__ == '__main__':
 
     if action == 2:
         # Adding new words to the verbs.csv:
-        input_text += " Please provide infinitives only"
+        input_text += " Please provide infinitives only.\n"
         words = ask_words(input_text)
         add_words = AddWord()
         add_words.add_verbs_to_file_batch(words)

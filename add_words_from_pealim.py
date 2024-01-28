@@ -112,7 +112,7 @@ class AddWord(BasePage):
             self.view_full_conjugation()
             self.add_conjugations_and_translations_to_file()
             print(f"Added the word {w}")
-        print("**** Words were successfully added ****")
+        print("**** Words were successfully added to verbs.csv ****")
 
 
 

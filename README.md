@@ -8,3 +8,9 @@
 
 1. To download and save the extension as .crx file
 2. Add option to the driver: driver.add_extension('User/path_to_file.crx')
+
+TODO: 
+prevent the same words being added
+make gui for word-translation practicing
+add nouns practicing
+look for pealim api
