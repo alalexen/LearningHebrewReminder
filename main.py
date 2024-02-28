@@ -39,7 +39,7 @@ if __name__ == '__main__':
     else:
         # Practice:
         score = 0
-        questions = 1
+        questions = 10
         for _ in range(questions):
             res = word_translation()
             score += res
