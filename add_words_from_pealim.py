@@ -8,7 +8,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By as by
 
 
-class BasePage:
+class Base:
     def __init__(self, timeout=15):
         self.url = "https://www.pealim.com"
         self.search_word_url = "https://www.pealim.com/search/?q=%s"
@@ -56,7 +56,7 @@ class BasePage:
         element.send_keys(text)
 
 
-class AddWord(BasePage):
+class AddWord(Base):
     def view_full_conjugation(self) -> None:
         self.click_on_element(xpath.view_full_conjugation)
         self.wait_until_element_displayed(xpath.meaning_title)
@@ -84,8 +84,7 @@ class AddWord(BasePage):
     def get_translation(self) -> str:
         """Get translation"""
         translation = self.driver.find_element(
-            by=by.XPATH, value=xpath.translation
-        ).text
+            by=by.XPATH, value=xpath.translation).text
         return translation.replace(",", ";")
 
     def add_conjugations_and_translations_to_file(self) -> None:

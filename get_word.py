@@ -24,7 +24,7 @@ def get_one_random_verb() -> dict:
         "all_conjugations": verb_line,
         "infinitive": verb_line[0],
         "translation": translation,
-        "random_conjugation": word,  # infinitive excluded
+        "random_conjugation": word,  # infinitive is excluded
         "form": get_form(verb_line.index(word)),
     }
 

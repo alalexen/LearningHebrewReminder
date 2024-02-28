@@ -1,12 +1,12 @@
 from add_words_from_pealim import AddWord
-from get_sentence_example import Reverso
 from questions_verbs import *
+from datetime import datetime
 
 
 def ask_action():
     ask_action = input(
         f"""What do you want to do?:
-         \n1 - Practice vocabulary\n2 - Add new verbs to your vocabulary\n3 - Add examples for word(s) with translation 
+         \n1 - Practice vocabulary\n2 - Add new verbs to your vocabulary
          \nyour answer: """
     )
     return int(ask_action)
@@ -16,6 +16,14 @@ def ask_words(input_text: str):
     """Input words for searching"""
     w = input(input_text)
     return w.split(",")
+
+
+def save_score(score: str):
+    with open("score.txt", "a") as f:
+        today = datetime.now()
+        text = str(today.day) + "." + str(today.month) + "." + str(today.year) + " - " + score
+        f.write(f"\n{text}")
+    print("Your result has been added.")
 
 
 if __name__ == '__main__':
@@ -28,22 +36,17 @@ if __name__ == '__main__':
         words = ask_words(input_text)
         add_words = AddWord()
         add_words.add_verbs_to_file_batch(words)
-    elif action == 3:
-        words = ask_words(input_text)
-        # Adding examples to examples.csv:
-        for w in words:
-            r = Reverso(w)
-            res = r.get_example()
-            r.add_example_to_file(res['he'], res['en'])
     else:
         # Practice:
-        app = ChooseCorrectTranslation()
-
-        print("*** Note! If you want practice vocabulary, check you have words added ***")
-        type = int((input("\nHow do you want to practice?\n1: Select the correct translation\n2: Select the correct form\nyour answer:")))
-        if type == 1:
-            # terminal:
-            for _ in range(10):
-                app.which_infinitive_translation_is_correct()
-        else:
-                app.run()
+        score = 0
+        questions = 1
+        for _ in range(questions):
+            res = word_translation()
+            score += res
+            res1 = conjugation()
+            score += res1
+        final_score = f"{score}/{questions*2}"
+        print("Your result is " + final_score)
+        save = input("Do you want to save the result? y/n: ")
+        if save in ["yes", "y"]:
+            save_score(final_score)
