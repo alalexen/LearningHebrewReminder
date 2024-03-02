@@ -1,5 +1,6 @@
 from get_word import get_one_random_verb
 import random
+import time
 
 
 def conjugation(options_amount: int = 4):
@@ -28,9 +29,12 @@ def conjugation(options_amount: int = 4):
 
 def word_translation(options_amount: int = 4):
     verbs = []
-    for _ in range(options_amount):
+    start_time = time.time()
+    timeout = 10
+    while len(verbs) < options_amount and time.time() - start_time < timeout:
         verb = get_one_random_verb()
-        verbs.append(verb)
+        if verb not in verbs:
+            verbs.append(verb)
 
     correct_answer = random.choice(verbs)
 

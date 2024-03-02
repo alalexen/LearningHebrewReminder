@@ -39,12 +39,10 @@ if __name__ == '__main__':
     else:
         # Practice:
         score = 0
-        questions = 10
+        questions = 25
         for _ in range(questions):
-            res = word_translation()
-            score += res
-            res1 = conjugation()
-            score += res1
+            score += word_translation()
+            score += conjugation()
         final_score = f"{score}/{questions*2}"
         print("Your result is " + final_score)
         save = input("Do you want to save the result? y/n: ")
